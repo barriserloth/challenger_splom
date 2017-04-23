@@ -66,8 +66,25 @@ d3.csv("challenger.csv", function(data) {
         .style('left', (d3.event.pageX) + 'px')
         .style('top', (d3.event.pageY - 14) + 'px');
     })
+    /*
+    .on('click', function(){
+      var active = this.active ? false : true;
+      d3.select(this)
+	.transition()
+	.attr('stroke', function(d){
+	  if(active === false){
+	    this.active = active;
+	    return 'steelblue';
+	  } else {
+	    this.active = active;
+	    return 'red';
+	  }
+	})
+    })
+    */
     .on('mouseout', function(d) {
       var curPath = this;
+      var active = this.active
       d3.select(this)
         .transition()
         .attr('stroke', 'steelblue');
@@ -107,7 +124,9 @@ function plot_axes(data, xVal, xLabel, i) {
     .call(axis);
   label = svg.append('text')
     .attr('class', 'label')
-    .attr('x', margin + i * space)
+    .attr('x', i * space)
     .attr('y', 20)
+    .attr('font-size', '18px')
+    .attr('font-style', 'bold')
     .text(xLabel);
 }
