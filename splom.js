@@ -194,7 +194,7 @@ function plot(data, xVal, yVal, xName) {
         tooltip.transition()
           .duration(200)
           .style('opacity', .9)
-        tooltip.html('Flight ' + d[vals[0]] + ': ' + d[xVal] + ', ' + d[yVal])
+        tooltip.html('Flight ' + d[vals[0]] + ': (' + d[xVal] + ', ' + d[yVal] + ')')
           .style('left', (d3.event.pageX) + 'px')
           .style('top', (d3.event.pageY - 14) + 'px');
 
