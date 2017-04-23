@@ -20,10 +20,13 @@ svg = d3.select('body').append('svg')
   .attr('height', h)
 
 d3.csv("challenger.csv", function(data) {
-
   for(i=0; i<5; i++){
     plot_axes(data, vals[i], labels[i], i);
   }
+
+  tooltip = d3.select('body').append('div')
+	      .attr('class', 'tooltip')
+	      .style('opacity', 0);
 
   lines = svg.append("g")
       .selectAll("path")
@@ -41,8 +44,27 @@ d3.csv("challenger.csv", function(data) {
             }
             return string;
         })
-        .attr('stroke', 'red')
-        .attr('fill', 'none');
+        .attr('stroke', 'steelblue')
+	.attr('stroke-width', 2)
+        .attr('fill', 'none')
+	.on('mouseover', function(d) {
+	  d3.select(this)
+	    .transition()
+	    .duration(200)
+	    .attr('stroke', 'red');
+	  tooltip.transition()
+	    .duration(200)
+	    .style('opacity', .9)
+	  tooltip.html('Flight ' + d[vals[0]])
+	    .style('left', (d3.event.pageX) + 'px')
+	    .style('top', (d3.event.pageY - 14) + 'px');
+	})
+	.on('mouseout', function(d) {
+	  d3.select(this)
+	    .transition()
+	    .duration(200)
+	    .attr('stroke', 'steelblue');
+	});
 
 
 });
