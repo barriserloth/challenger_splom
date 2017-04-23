@@ -20,6 +20,9 @@ labels = ['Flight Index', 'O-Ring Distress', 'Launch Temp',
 
 var color = d3.scale.category10();
 
+
+// gridline code from example at:
+//	http://www.d3noob.org/2013/01/adding-grid-lines-to-d3js-graph.html	
 function make_x_axis() {
   return d3.svg.axis()
     .scale(xScale)
@@ -34,7 +37,10 @@ function make_y_axis() {
     .ticks(5)
 }
 
-// Next, we will load in our CSV of data
+
+// build multiple svg plots (25 to be exact, only 20 of which are actually graphs)
+// 	to account for as many plots as we need
+// loops through dataset, calls our 'plot' function to build each plot
 d3.csv('challenger.csv', function(data) {
   for (i = 0; i < 5; i++)
     for (j = 0; j < 5; j++)
@@ -43,6 +49,7 @@ d3.csv('challenger.csv', function(data) {
 
 function plot(data, xVal, yVal, xName) {
 
+  // scaling code provided by Eric Alexander
   xScale = d3.scale.linear()
     .domain([d3.min(data, function(d) {
         return parseFloat(d[xVal]);
@@ -68,7 +75,14 @@ function plot(data, xVal, yVal, xName) {
     .attr('width', w)
     .attr('height', h)
     .attr('border', border)
+    /*
+    .call(d3.behavior.zoom().on('zoom', function() {
+      svg.attr('transform', 'translate(' + d3.event.translate + ')' + ' scale(' + d3.event.scale + ')')
+      }))
+    .append('g')
+    */
 
+  // if we are not along the diagonal, draw our gridlines
   if (xVal !== yVal) {
     svg.append('g')
       .attr('class', 'grid')
@@ -85,10 +99,12 @@ function plot(data, xVal, yVal, xName) {
       );
   }
 
+  // if along diagonal, color background gray
   if (xVal === yVal) {
     svg.style('background-color', 'gray');
   }
 
+  // build borders around each graph
   borderPath = svg.append('rect')
     .attr('x', 0)
     .attr('y', 0)
@@ -98,7 +114,7 @@ function plot(data, xVal, yVal, xName) {
     .style('fill', 'none')
     .style('stroke-width', border);
 
-  // Build axes! (These are kind of annoying, actually...)
+  // next two if blocks build x-axes only on two edges of our vis 
   if (xVal !== yVal && i == 0) {
     xAxis = d3.svg.axis()
       .scale(xScale)
@@ -121,6 +137,7 @@ function plot(data, xVal, yVal, xName) {
       .call(xAxis);
   }
 
+  // if we are along diagonal, append variable names
   if (xVal === yVal) {
     xLabel = svg.append('text')
       .attr('class', 'label')
@@ -129,6 +146,7 @@ function plot(data, xVal, yVal, xName) {
       .text(xName);
   }
 
+  // next two if blocks build y-axes only on two edges of our vis
   if (xVal !== yVal && j == 0) {
     yAxis = d3.svg.axis()
       .scale(yScale)
@@ -190,7 +208,7 @@ function plot(data, xVal, yVal, xName) {
         d3.selectAll('.flight_' + d[vals[0]])
           .transition()
           .duration(200)
-          .attr('r', 7);
+          .attr('r', 10);
         tooltip.transition()
           .duration(200)
           .style('opacity', .9)
@@ -199,7 +217,7 @@ function plot(data, xVal, yVal, xName) {
           .style('top', (d3.event.pageY - 14) + 'px');
 
       })
-      // found the d3 'active' attribute to calculate toggles
+      // researched the d3 'active' attribute to calculate toggles
       .on('click', function(d) {
         var active = eval('flight_' + d[vals[0]]).active ? false : true;
         d3.selectAll('.flight_' + d[vals[0]])
