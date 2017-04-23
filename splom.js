@@ -11,8 +11,8 @@ border=1;
 bordercolor='black';
 
 vals = ['flight_index', 'num_o_ring_distress', 'launch_temp',
-  'leak_check_pressure', 'tufte_metric'
-];
+  'leak_check_pressure', 'tufte_metric'];
+
 labels = ['Flight Index', 'O-Ring Distress', 'Launch Temp',
 'Leak Pressure', 'Tufte Metric'];
 
@@ -65,7 +65,7 @@ function plot(data, xVal, yVal, xName){
   svg = d3.select('#pointsSVG').append('svg:svg')
     .attr('width', w)
     .attr('height', h)
-    .attr('border', border);
+    .attr('border', border)
 
   if(xVal !== yVal){
     svg.append('g')
@@ -76,13 +76,11 @@ function plot(data, xVal, yVal, xName){
 	    .tickFormat('')
        )
 
-	    svg.append('g')
-	       .attr('class', 'grid')
-	       .call(make_y_axis()
-		   .tickSize(-w, 0, 0)
-		   .tickFormat('')
-	       )
-       
+    svg.append('g')
+       .attr('class', 'grid')
+       .call(make_y_axis()
+	   .tickSize(-w, 0, 0) .tickFormat('')
+       );       
   }
 
   if(xVal === yVal){
