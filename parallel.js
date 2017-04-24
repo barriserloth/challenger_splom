@@ -119,7 +119,7 @@ function plot_axes(data, xVal, xLabel, i) {
   axis = d3.svg.axis()
     .scale(xScale)
     .orient('right')
-    .ticks(0)
+    .ticks(5)
     .outerTickSize(0);
   axisG = svg.append('g')
     .attr('class', 'axis')
