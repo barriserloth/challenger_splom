@@ -55,7 +55,7 @@ d3.csv("challenger.csv", function(data) {
         .transition()
         .attr('stroke', 'red');
       d3.selectAll('.datapath').filter(function(d,i) {
-      return (this !== curPath);})
+      return (this !== curPath && !this.active);})
         .transition()
         .attr('stroke', 'gray')
         .style('opacity', .2);
@@ -87,15 +87,15 @@ d3.csv("challenger.csv", function(data) {
         d3.select(this)
           .transition()
           .attr('stroke', 'steelblue');
+      }
 
-        d3.selectAll('path').filter(function(d,i) {
-        return (this !== curPath);})
-          .transition()
-          .attr('stroke', 'steelblue')
-          .style('opacity', 1);
-        tooltip.transition()
-          .style('opacity', 0);
-        }
+      d3.selectAll('path').filter(function(){
+        return (this !== curPath && !this.active);})
+        .transition()
+        .attr('stroke', 'steelblue')
+        .style('opacity', 1);
+      tooltip.transition()
+        .style('opacity', 0);
     });
 
 
