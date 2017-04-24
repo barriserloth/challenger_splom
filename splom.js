@@ -46,7 +46,7 @@ d3.csv('challenger.csv', function(data) {
     .attr('class', 'svg-container')
     .append('svg')
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 " + w  + " " + h)
+    .attr("viewBox", "0 0 " + w*9  + " " + h*9)
     .attr('class', 'svg-content-responsive')
     .attr('border', border)
     // added zoom functionality to the entire graph element
