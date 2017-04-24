@@ -92,6 +92,7 @@ d3.csv("challenger.csv", function(data) {
       d3.selectAll('path').filter(function(){
         return (this !== curPath && !this.active);})
         .transition()
+        .duration(10)
         .attr('stroke', 'steelblue')
         .style('opacity', 1);
       tooltip.transition()
