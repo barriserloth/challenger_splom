@@ -4,8 +4,6 @@ yOffset = 50; // Space for y-axis labels
 margin = 40; // Margin around visualization
 space = 275;
 
-var x = d3.scale.ordinal().rangePoints([margin, w], 1)
-
 vals = ['flight_index', 'num_o_ring_distress', 'launch_temp',
   'leak_check_pressure', 'tufte_metric'
 ];
@@ -102,10 +100,10 @@ d3.csv("challenger.csv", function(data) {
 
 function plot_axes(data, xVal, xLabel, i) {
   xScale = d3.scale.linear()
-    .domain([d3.min(data, function(d) {
+    .domain([d3.max(data, function(d) {
         return parseFloat(d[xVal]);
       }),
-      d3.max(data, function(d) {
+      d3.min(data, function(d) {
         return parseFloat(d[xVal]);
       })
     ])

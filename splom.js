@@ -22,7 +22,7 @@ var color = d3.scale.category10();
 
 
 // gridline code from example at:
-//	http://www.d3noob.org/2013/01/adding-grid-lines-to-d3js-graph.html	
+//	http://www.d3noob.org/2013/01/adding-grid-lines-to-d3js-graph.html
 function make_x_axis() {
   return d3.svg.axis()
     .scale(xScale)
@@ -42,12 +42,30 @@ function make_y_axis() {
 // 	to account for as many plots as we need
 // loops through dataset, calls our 'plot' function to build each plot
 d3.csv('challenger.csv', function(data) {
+  parent = d3.select('body').append('svg')
+      .attr('height', h*5)
+      .attr('width', w*5)
+      .attr('border', border)
+      .call(d3.behavior.zoom().on('zoom', function() {
+        parent.attr('transform', 'translate(' + d3.event.translate + ')' + ' scale(' + d3.event.scale + ')')
+        }))
+      .append('g')
+
+      borderPath = parent.append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('height', h*5)
+        .attr('width', w*5)
+        .style('stroke', bordercolor)
+        .style('fill', 'none')
+        .style('stroke-width', 4);
+
   for (i = 0; i < 5; i++)
     for (j = 0; j < 5; j++)
-      plot(data, vals[j], vals[i], labels[i]);
+      plot(data, vals[j], vals[i], labels[i], i, j);
 });
 
-function plot(data, xVal, yVal, xName) {
+function plot(data, xVal, yVal, xName, ix, jx) {
 
   // scaling code provided by Eric Alexander
   xScale = d3.scale.linear()
@@ -71,16 +89,24 @@ function plot(data, xVal, yVal, xName) {
 
 
   // Next, we will create an SVG element to contain our visualization.
-  svg = d3.select('#pointsSVG').append('svg:svg')
+  //d3.select('#pointsSVG').append('svg:svg')
+  svg = parent.append('g')
+  // if along diagonal, color background gray
+
+
+  svg.attr('class', 'graph')
     .attr('width', w)
     .attr('height', h)
+    .attr('transform', function(ix,jx){
+        str = ''
+        if(i === 0) str = 'translate(' + w*j + ',0)'
+        else str = 'translate(' + w*j + ',' + h*i + ')'
+        return str
+    })
     .attr('border', border)
-    /*
-    .call(d3.behavior.zoom().on('zoom', function() {
-      svg.attr('transform', 'translate(' + d3.event.translate + ')' + ' scale(' + d3.event.scale + ')')
-      }))
-    .append('g')
-    */
+
+
+
 
   // if we are not along the diagonal, draw our gridlines
   if (xVal !== yVal) {
@@ -99,11 +125,6 @@ function plot(data, xVal, yVal, xName) {
       );
   }
 
-  // if along diagonal, color background gray
-  if (xVal === yVal) {
-    svg.style('background-color', 'gray');
-  }
-
   // build borders around each graph
   borderPath = svg.append('rect')
     .attr('x', 0)
@@ -111,10 +132,13 @@ function plot(data, xVal, yVal, xName) {
     .attr('height', h)
     .attr('width', w)
     .style('stroke', bordercolor)
-    .style('fill', 'none')
+    .style('fill', function(){
+      if (xVal === yVal) return 'gray';
+      else return 'none';
+    })
     .style('stroke-width', border);
 
-  // next two if blocks build x-axes only on two edges of our vis 
+  // next two if blocks build x-axes only on two edges of our vis
   if (xVal !== yVal && i == 0) {
     xAxis = d3.svg.axis()
       .scale(xScale)
@@ -207,10 +231,8 @@ function plot(data, xVal, yVal, xName) {
       .on('mouseover', function(d) {
         d3.selectAll('.flight_' + d[vals[0]])
           .transition()
-          .duration(200)
           .attr('r', 10);
         tooltip.transition()
-          .duration(200)
           .style('opacity', .9)
         tooltip.html('Flight ' + d[vals[0]] + ': (' + d[xVal] + ', ' + d[yVal] + ')')
           .style('left', (d3.event.pageX) + 'px')
@@ -239,10 +261,8 @@ function plot(data, xVal, yVal, xName) {
       .on('mouseout', function(d) {
         d3.selectAll('.flight_' + d[vals[0]])
           .transition()
-          .duration(200)
           .attr('r', 4);
         tooltip.transition()
-          .duration(500)
           .style('opacity', 0);
       });
 
