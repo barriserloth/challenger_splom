@@ -42,9 +42,12 @@ function make_y_axis() {
 // 	to account for as many plots as we need
 // loops through dataset, calls our 'plot' function to build each plot
 d3.csv('challenger.csv', function(data) {
-  parent = d3.select('body').append('svg')
-      .attr('height', h*10)
-      .attr('width', w*10)
+  parent = d3.select('body').append('div')
+      .attr('class', 'svg-container')
+    .append('svg')
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox", "0 0 " + w*10 + " " + h*10)
+      .attr('class', 'svg-content-responsive')
       .attr('border', border)
       // added zoom functionality to the entire graph element
       // can be panned/zoomed as a fully entity
