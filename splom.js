@@ -43,9 +43,12 @@ function make_y_axis() {
 // loops through dataset, calls our 'plot' function to build each plot
 d3.csv('challenger.csv', function(data) {
   parent = d3.select('body').append('svg')
-      .attr('height', h*5)
-      .attr('width', w*5)
+      .attr('height', h*10)
+      .attr('width', w*10)
       .attr('border', border)
+      // added zoom functionality to the entire graph element
+      // can be panned/zoomed as a fully entity
+      // zoom method : https://coderwall.com/p/psogia/simplest-way-to-add-zoom-pan-on-d3-js
       .call(d3.behavior.zoom().on('zoom', function() {
         parent.attr('transform', 'translate(' + d3.event.translate + ')' + ' scale(' + d3.event.scale + ')')
         }))
@@ -91,10 +94,7 @@ function plot(data, xVal, yVal, xName, ix, jx) {
   // Next, we will create an SVG element to contain our visualization.
   //d3.select('#pointsSVG').append('svg:svg')
   svg = parent.append('g')
-  // if along diagonal, color background gray
-
-
-  svg.attr('class', 'graph')
+    .attr('class', 'graph')
     .attr('width', w)
     .attr('height', h)
     .attr('transform', function(ix,jx){
@@ -132,6 +132,7 @@ function plot(data, xVal, yVal, xName, ix, jx) {
     .attr('height', h)
     .attr('width', w)
     .style('stroke', bordercolor)
+    // if along diagonal, background = gray
     .style('fill', function(){
       if (xVal === yVal) return 'gray';
       else return 'none';

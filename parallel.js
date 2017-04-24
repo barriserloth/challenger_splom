@@ -36,7 +36,6 @@ d3.csv("challenger.csv", function(data) {
       for (i = 0; i < 5; i++) {
         string += (margin + 275 * i) + ' ';
         string += ((scales[i](d[vals[i]])));
-        console.log(scales[i](d[vals[i]]));
         if (i != 4) {
           string += ' L ';
         }
@@ -64,28 +63,28 @@ d3.csv("challenger.csv", function(data) {
         .style('left', (d3.event.pageX) + 'px')
         .style('top', (d3.event.pageY - 14) + 'px');
     })
-    /*
     .on('click', function(){
       var active = this.active ? false : true;
       d3.select(this)
-	.transition()
-	.attr('stroke', function(d){
-	  if(active === false){
-	    this.active = active;
-	    return 'steelblue';
-	  } else {
-	    this.active = active;
-	    return 'red';
+    	.transition()
+    	.attr('stroke', function(d){
+    	  if(active === false){
+    	    this.active = active;
+    	    return 'steelblue';
+    	  } else {
+    	    this.active = active;
+    	    return 'red';
 	  }
 	})
     })
-    */
     .on('mouseout', function(d) {
       var curPath = this;
-      var active = this.active
-      d3.select(this)
-        .transition()
-        .attr('stroke', 'steelblue');
+      var active = this.active;
+      if(!active){
+        d3.select(this)
+          .transition()
+          .attr('stroke', 'steelblue');
+      }
       d3.selectAll('path').filter(function(d,i) {
       return (this !== curPath);})
         .transition()
