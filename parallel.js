@@ -76,12 +76,4 @@ function plot_axes(data, xVal, xLabel, i){
           .text(xLabel);
 
 
-          //((10 + 275*i), (d[vals[i]] + 60))
-
-}
-
-// Path building function, obtained from url below
-// https://bl.ocks.org/mbostock/1341021
-function path(d) {
-  return line(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
 }
