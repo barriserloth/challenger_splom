@@ -45,26 +45,39 @@ d3.csv("challenger.csv", function(data) {
       }
       return string;
     })
+    .attr('class', 'datapath')
     .attr('stroke', 'steelblue')
-    .attr('stroke-width', 2)
+    .attr('stroke-width', 3)
     .attr('fill', 'none')
     .on('mouseover', function(d) {
+      var curPath = this;
       d3.select(this)
         .transition()
-        .duration(200)
         .attr('stroke', 'red');
+      d3.selectAll('.datapath').filter(function(d,i) {
+      return (this !== curPath);})
+        .transition()
+        .attr('stroke', 'gray')
+        .style('opacity', .2);
       tooltip.transition()
-        .duration(200)
         .style('opacity', .9)
-      tooltip.html('Flight ' + d[vals[0]])
+      tooltip.html('Flight ' + d[vals[0]] + '<br/>' + ' (' + d[vals[1]] + ', ' +
+    d[vals[2]] + ', ' + d[vals[3]] + ', ' + d[vals[4]] + ')')
         .style('left', (d3.event.pageX) + 'px')
         .style('top', (d3.event.pageY - 14) + 'px');
     })
     .on('mouseout', function(d) {
+      var curPath = this;
       d3.select(this)
         .transition()
-        .duration(200)
         .attr('stroke', 'steelblue');
+      d3.selectAll('path').filter(function(d,i) {
+      return (this !== curPath);})
+        .transition()
+        .attr('stroke', 'steelblue')
+        .style('opacity', 1);
+      tooltip.transition()
+        .style('opacity', 0);
     });
 
 
