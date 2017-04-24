@@ -248,11 +248,11 @@ function plot(data, xVal, yVal, xName, ix, jx) {
           .style('fill', function(d) {
             if (active === false) {
               eval('flight_' + d[vals[0]]).active = active;
-	      if(d[vals[1]] == 1.0){
-		  return 'yellow';
-		} else if (d[vals[1]] == 2.0){
-		  return 'orange';
-		} else return 'green';
+        	      if(d[vals[1]] == 1.0){
+        		  return 'yellow';
+        		} else if (d[vals[1]] == 2.0){
+        		  return 'orange';
+        		} else return 'green';
             } else {
               eval('flight_' + d[vals[0]]).active = active;
               return 'red';

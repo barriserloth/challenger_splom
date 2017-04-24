@@ -43,6 +43,9 @@ d3.csv("challenger.csv", function(data) {
       return string;
     })
     .attr('class', 'datapath')
+    .attr('id', function(data) {
+      return 'flight_' + data[vals[0]];
+    })
     .attr('stroke', 'steelblue')
     .attr('stroke-width', 3)
     .attr('fill', 'none')
@@ -63,35 +66,36 @@ d3.csv("challenger.csv", function(data) {
         .style('left', (d3.event.pageX) + 'px')
         .style('top', (d3.event.pageY - 14) + 'px');
     })
-    .on('click', function(){
-      var active = this.active ? false : true;
+    .on('click', function(data){
+      var active = eval('flight_' + data[vals[0]]).active ? false : true;
       d3.select(this)
     	.transition()
     	.attr('stroke', function(d){
     	  if(active === false){
-    	    this.active = active;
+    	    eval('flight_' + data[vals[0]]).active = active;
     	    return 'steelblue';
     	  } else {
-    	    this.active = active;
+    	    eval('flight_' + data[vals[0]]).active = active;
     	    return 'red';
 	  }
 	})
     })
     .on('mouseout', function(d) {
       var curPath = this;
-      var active = this.active;
+      var active = eval('flight_' + d[vals[0]]).active;
       if(!active){
         d3.select(this)
           .transition()
           .attr('stroke', 'steelblue');
-      }
-      d3.selectAll('path').filter(function(d,i) {
-      return (this !== curPath);})
-        .transition()
-        .attr('stroke', 'steelblue')
-        .style('opacity', 1);
-      tooltip.transition()
-        .style('opacity', 0);
+
+        d3.selectAll('path').filter(function(d,i) {
+        return (this !== curPath);})
+          .transition()
+          .attr('stroke', 'steelblue')
+          .style('opacity', 1);
+        tooltip.transition()
+          .style('opacity', 0);
+        }
     });
 
 
