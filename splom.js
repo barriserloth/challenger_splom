@@ -30,11 +30,6 @@ d3.csv('challenger.csv', function(data) {
 });
 
 
-
-
-
-
-
 function plot(data, xVal, yVal, xName){
 
   xScale = d3.scale.linear()
