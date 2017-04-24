@@ -245,6 +245,7 @@ function plot(data, xVal, yVal, xName, ix, jx) {
         var active = eval('flight_' + d[vals[0]]).active ? false : true;
         d3.selectAll('.flight_' + d[vals[0]])
           .transition()
+          .duration(10)
           .style('fill', function(d) {
             if (active === false) {
               eval('flight_' + d[vals[0]]).active = active;
