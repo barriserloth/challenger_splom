@@ -54,45 +54,46 @@ d3.csv("challenger.csv", function(data) {
       d3.select(this)
         .transition()
         .attr('stroke', 'red');
-      d3.selectAll('.datapath').filter(function(d,i) {
-      return (this !== curPath && !this.active);})
+      d3.selectAll('.datapath').filter(function(d, i) {
+          return (this !== curPath && !this.active);
+        })
         .transition()
         .attr('stroke', 'gray')
         .style('opacity', .2);
       tooltip.transition()
         .style('opacity', .9)
       tooltip.html('Flight ' + d[vals[0]] + '<br/>' + ' (' + d[vals[1]] + ', ' +
-    d[vals[2]] + ', ' + d[vals[3]] + ', ' + d[vals[4]] + ')')
+          d[vals[2]] + ', ' + d[vals[3]] + ', ' + d[vals[4]] + ')')
         .style('left', (d3.event.pageX) + 'px')
         .style('top', (d3.event.pageY - 14) + 'px');
     })
-    .on('click', function(data){
+    .on('click', function(data) {
       var active = eval('flight_' + data[vals[0]]).active ? false : true;
       d3.select(this)
-    	.transition()
-    	.attr('stroke', function(d){
-    	  if(active === false){
-    	    eval('flight_' + data[vals[0]]).active = active;
-    	    return 'steelblue';
-    	  } else {
-    	    eval('flight_' + data[vals[0]]).active = active;
-    	    return 'red';
-	  }
-	})
+        .transition()
+        .attr('stroke', function(d) {
+          if (active === false) {
+            eval('flight_' + data[vals[0]]).active = active;
+            return 'steelblue';
+          } else {
+            eval('flight_' + data[vals[0]]).active = active;
+            return 'red';
+          }
+        })
     })
     .on('mouseout', function(d) {
       var curPath = this;
       var active = eval('flight_' + d[vals[0]]).active;
-      if(!active){
+      if (!active) {
         d3.select(this)
           .transition()
           .attr('stroke', 'steelblue');
       }
 
-      d3.selectAll('path').filter(function(){
-        return (this !== curPath && !this.active);})
+      d3.selectAll('path').filter(function() {
+          return (this !== curPath && !this.active);
+        })
         .transition()
-        .duration(10)
         .attr('stroke', 'steelblue')
         .style('opacity', 1);
       tooltip.transition()
