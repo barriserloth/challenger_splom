@@ -43,28 +43,28 @@ function make_y_axis() {
 // loops through dataset, calls our 'plot' function to build each plot
 d3.csv('challenger.csv', function(data) {
   parent = d3.select('body').append('div')
-      .attr('class', 'svg-container')
+    .attr('class', 'svg-container')
     .append('svg')
-      .attr("preserveAspectRatio", "xMinYMin meet")
-      .attr("viewBox", "0 0 " + w*10 + " " + h*10)
-      .attr('class', 'svg-content-responsive')
-      .attr('border', border)
-      // added zoom functionality to the entire graph element
-      // can be panned/zoomed as a fully entity
-      // zoom method : https://coderwall.com/p/psogia/simplest-way-to-add-zoom-pan-on-d3-js
-      .call(d3.behavior.zoom().on('zoom', function() {
-        parent.attr('transform', 'translate(' + d3.event.translate + ')' + ' scale(' + d3.event.scale + ')')
-        }))
-      .append('g')
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 " + w * 10 + " " + h * 10)
+    .attr('class', 'svg-content-responsive')
+    .attr('border', border)
+    // added zoom functionality to the entire graph element
+    // can be panned/zoomed as a fully entity
+    // zoom method : https://coderwall.com/p/psogia/simplest-way-to-add-zoom-pan-on-d3-js
+    .call(d3.behavior.zoom().on('zoom', function() {
+      parent.attr('transform', 'translate(' + d3.event.translate + ')' + ' scale(' + d3.event.scale + ')')
+    }))
+    .append('g')
 
-      borderPath = parent.append('rect')
-        .attr('x', 0)
-        .attr('y', 0)
-        .attr('height', h*5)
-        .attr('width', w*5)
-        .style('stroke', bordercolor)
-        .style('fill', 'none')
-        .style('stroke-width', 4);
+  borderPath = parent.append('rect')
+    .attr('x', 0)
+    .attr('y', 0)
+    .attr('height', h * 5)
+    .attr('width', w * 5)
+    .style('stroke', bordercolor)
+    .style('fill', 'none')
+    .style('stroke-width', 4);
 
   for (i = 0; i < 5; i++)
     for (j = 0; j < 5; j++)
@@ -100,11 +100,11 @@ function plot(data, xVal, yVal, xName, ix, jx) {
     .attr('class', 'graph')
     .attr('width', w)
     .attr('height', h)
-    .attr('transform', function(ix,jx){
-        str = ''
-        if(i === 0) str = 'translate(' + w*j + ',0)'
-        else str = 'translate(' + w*j + ',' + h*i + ')'
-        return str
+    .attr('transform', function(ix, jx) {
+      str = ''
+      if (i === 0) str = 'translate(' + w * j + ',0)'
+      else str = 'translate(' + w * j + ',' + h * i + ')'
+      return str
     })
     .attr('border', border)
 
@@ -136,7 +136,7 @@ function plot(data, xVal, yVal, xName, ix, jx) {
     .attr('width', w)
     .style('stroke', bordercolor)
     // if along diagonal, background = gray
-    .style('fill', function(){
+    .style('fill', function() {
       if (xVal === yVal) return 'gray';
       else return 'none';
     })
@@ -226,11 +226,11 @@ function plot(data, xVal, yVal, xName, ix, jx) {
       })
       .attr('r', 4)
       .style('fill', function(d) {
-        if(d[vals[1]] == 1.0){
-	  return 'yellow';
-	} else if (d[vals[1]] == 2.0){
-	  return 'orange';
-	} else return 'green';
+        if (d[vals[1]] == 1.0) {
+          return 'yellow';
+        } else if (d[vals[1]] == 2.0) {
+          return 'orange';
+        } else return 'green';
       })
       .on('mouseover', function(d) {
         d3.selectAll('.flight_' + d[vals[0]])
@@ -252,11 +252,11 @@ function plot(data, xVal, yVal, xName, ix, jx) {
           .style('fill', function(d) {
             if (active === false) {
               eval('flight_' + d[vals[0]]).active = active;
-        	      if(d[vals[1]] == 1.0){
-        		  return 'yellow';
-        		} else if (d[vals[1]] == 2.0){
-        		  return 'orange';
-        		} else return 'green';
+              if (d[vals[1]] == 1.0) {
+                return 'yellow';
+              } else if (d[vals[1]] == 2.0) {
+                return 'orange';
+              } else return 'green';
             } else {
               eval('flight_' + d[vals[0]]).active = active;
               return 'red';
